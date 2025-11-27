@@ -13,6 +13,8 @@ const projectRoutes = require("./routes/projects");
 const trackingRoutes = require("./routes/tracking");
 const initializeSocket = require("./socket");
 
+const PORT = process.env.PORT || 4000 
+
 const app = express();
 const server = http.createServer(app);
 
@@ -72,7 +74,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
