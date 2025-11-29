@@ -1,4 +1,4 @@
-import { CiLocationArrow1 } from "react-icons/ci"; 
+import { CiLocationArrow1 } from "react-icons/ci";
 import {
   FaHome,
   FaClock,
@@ -9,19 +9,18 @@ import {
 import { BiPackage } from "react-icons/bi";
 import { IoSearchOutline } from "react-icons/io5";
 import Navbar from "../Components/Navbar";
-import {Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
 import { useGlobalState } from "@hmk_codeweb88/useglobalstate";
 import Footer from "../Components/Footer";
 
-
 export default function HomePage() {
-     const [IsUserLogin] = useGlobalState("IsUserLogin");
-   const navigate = useNavigate()
+  const [IsUserLogin] = useGlobalState("IsUserLogin");
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to from-orange-100 via-orange-50 to-orange-100">
       {/* Header */}
-      <Navbar/>
+      <Navbar />
 
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col justify-center items-center text-center">
@@ -30,32 +29,51 @@ export default function HomePage() {
             NEW
           </span>
           <span className="text-orange-500 inline-flex justify-center items-center gap-2 text-sm">
-            See  your prefered Website / App <CiLocationArrow1 size={20} className="mt-0.5"/>
+            See your prefered Website / App{" "}
+            <CiLocationArrow1 size={20} className="mt-0.5" />
           </span>
         </div>
 
         <h1 className="text-5xl mt-2 capitalize font-bold text-gray-900 mb-4">
           Track all your
           <br />
-          <span className="text-orange-500 playfair-display-WebAndAppText">Websites</span>  and <span className="text-orange-500 playfair-display-WebAndAppText">App</span>
+          <span className="text-orange-500 playfair-display-WebAndAppText">
+            Websites
+          </span>{" "}
+          and{" "}
+          <span className="text-orange-500 playfair-display-WebAndAppText">
+            App
+          </span>
         </h1>
 
         <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-          DevTrace helps you monitor user activity on your website in a simple and clean way. It gives you clear insights into how visitors behave so you can improve your product with confidence.
+          DevTrace helps you monitor user activity on your website in a simple
+          and clean way. It gives you clear insights into how visitors behave so
+          you can improve your product with confidence.
         </p>
 
         <div className="flex items-center justify-center gap-4 mb-16">
-          <Link to={'/donate'}  className="bg-orange-500 text-white px-8 py-3 rounded-lg font-medium hover:bg-orange-600">
+          <Link
+            to={"/donate"}
+            className="bg-orange-500 text-white px-8 py-3 rounded-lg font-medium hover:bg-orange-600"
+          >
             Donate
           </Link>
-          {
-            IsUserLogin ? <button onClick={()=>navigate('/dashboard')} className="border border-orange-500 text-orange-500 px-8 py-3 rounded-lg font-medium hover:bg-orange-50">
-            Dashboard
-          </button> :  <button onClick={()=>navigate('/login')} className="border border-orange-500 text-orange-500 px-8 py-3 rounded-lg font-medium hover:bg-orange-50">
-            Get Started
-          </button>
-          }
-          
+          {IsUserLogin ? (
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="border border-orange-500 text-orange-500 px-8 py-3 rounded-lg font-medium hover:bg-orange-50"
+            >
+              Dashboard
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="border border-orange-500 text-orange-500 px-8 py-3 rounded-lg font-medium hover:bg-orange-50"
+            >
+              Get Started
+            </button>
+          )}
         </div>
       </div>
 
@@ -63,94 +81,92 @@ export default function HomePage() {
       <div className="max-w-6xl  mx-auto px-6 pb-12">
         <div className="bg-white rounded-2xl shadow-2xl p-6">
           <div className="flex gap-6">
-          
-
             {/* Main Content */}
-            <div >
+            <div>
               <div className="flex items-center justify-between mb-8">
-              <div className="flex justify-center items-center gap-2">
-                <svg
-                  stroke="#F97316"
-                  fill="#F97316"
-                  stroke-width="0"
-                  role="img"
-                  viewBox="0 0 24 24"
-                  height="30px"
-                  width="30px"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="copy-svg-injected"
-                >
-                  <path d="M11.4602 2.9425c-.5626.1289-1.087.4605-1.4268.902-.1981.2576-.3965.6748-.4631.9742l-.054.2429H3.5794v-.5451c0-.6036-.0258-.7113-.1944-.811-.0858-.0505-.2419-.056-1.6282-.056H.2234l-.1116.1117L0 3.873v3.125l.0958.1073.0958.1072 1.5378.008c1.6822.009 1.6406.0134 1.775-.186.0706-.1047.0749-.1428.0749-.6644v-.5534h3.9553l-.3769.1912c-.8331.4228-1.4973.8874-2.0969 1.467-.628.607-1.088 1.2325-1.4461 1.9655-.1896.3882-.444 1.0768-.5266 1.425-.0339.143-.053.1724-.1127.1724-.1225 0-.4497.0964-.6247.1842-.822.4118-1.2305 1.3308-.9832 2.2115.2266.8072.977 1.3805 1.8066 1.3805.3291 0 .54-.0497.8615-.2032.6385-.305 1.0542-.9742 1.0542-1.6977 0-.3075-.1065-.6967-.2624-.9592-.1723-.29-.5245-.6142-.802-.7381-.118-.0527-.215-.1143-.2154-.1368s.0651-.2415.1459-.4868c.7245-2.202 2.4014-3.6894 5.14-4.5596.2077-.066.3941-.1256.4143-.1324.021-.007.074.1002.1233.2503.273.8284.919 1.419 1.794 1.6404.3813.0964.9449.0759 1.3297-.0484.7415-.2395 1.368-.8767 1.6089-1.6366l.0697-.2198.3264.1096c1.161.39 2.2134 1.0413 3.129 1.9366 1.0849 1.061 1.8142 2.2829 2.2176 3.7155l.079.2805-.1689.0756c-.7889.353-1.2652 1.2638-1.0914 2.0866.1672.7919.7946 1.396 1.5759 1.5175.8882.138 1.7792-.4011 2.0782-1.2575.3469-.9937-.2055-2.09-1.2146-2.4104-.1409-.0448-.297-.0814-.347-.0814-.0862 0-.0938-.0128-.1506-.2545-.3385-1.4397-1.2326-3.0012-2.3646-4.1292-.5791-.5772-1.4676-1.2477-2.0288-1.531-.1039-.0525-.1888-.1026-.1888-.1114 0-.009.931-.0159 2.0687-.0159h2.0688v1.1811l.0958.1073.0958.1072h3.1565l.1073-.1073.1073-.1074.009-1.5112c.0101-1.661.01-1.6647-.1871-1.781-.0858-.0506-.2419-.056-1.6282-.056h-1.5334l-.1116.1117-.1116.1116v1.1887h-5.9689l-.0223-.149c-.0615-.41-.3043-.8823-.633-1.2318-.3535-.3758-.7755-.6217-1.2647-.737-.2482-.0585-.823-.0592-1.0756-.001m-.0372 9.1302c-.0553.03-.14.1509-.2346.3352-1.723 3.3554-4.1678 8.1776-4.182 8.2486-.0436.218.1804.4549.3969.4198.0567-.009.989-.4191 2.0718-.9109s2.0056-.9086 2.0508-.9263c.0713-.0279.3408.0876 2.0523.8794 1.0836.5014 2.0274.932 2.0974.9572.1543.0554.2997.0178.418-.1082.181-.1926.2654-.003-2.0343-4.5771-1.497-2.9778-2.1337-4.2128-2.2047-4.277-.1137-.1028-.2873-.1192-.4316-.0407"></path>
-                </svg>
-                <h1 className="playfair-display-WebAndAppText">DevTrace</h1>
+                <div className="flex justify-center items-center gap-2">
+                  <svg
+                    stroke="#F97316"
+                    fill="#F97316"
+                    stroke-width="0"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    height="30px"
+                    width="30px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="copy-svg-injected"
+                  >
+                    <path d="M11.4602 2.9425c-.5626.1289-1.087.4605-1.4268.902-.1981.2576-.3965.6748-.4631.9742l-.054.2429H3.5794v-.5451c0-.6036-.0258-.7113-.1944-.811-.0858-.0505-.2419-.056-1.6282-.056H.2234l-.1116.1117L0 3.873v3.125l.0958.1073.0958.1072 1.5378.008c1.6822.009 1.6406.0134 1.775-.186.0706-.1047.0749-.1428.0749-.6644v-.5534h3.9553l-.3769.1912c-.8331.4228-1.4973.8874-2.0969 1.467-.628.607-1.088 1.2325-1.4461 1.9655-.1896.3882-.444 1.0768-.5266 1.425-.0339.143-.053.1724-.1127.1724-.1225 0-.4497.0964-.6247.1842-.822.4118-1.2305 1.3308-.9832 2.2115.2266.8072.977 1.3805 1.8066 1.3805.3291 0 .54-.0497.8615-.2032.6385-.305 1.0542-.9742 1.0542-1.6977 0-.3075-.1065-.6967-.2624-.9592-.1723-.29-.5245-.6142-.802-.7381-.118-.0527-.215-.1143-.2154-.1368s.0651-.2415.1459-.4868c.7245-2.202 2.4014-3.6894 5.14-4.5596.2077-.066.3941-.1256.4143-.1324.021-.007.074.1002.1233.2503.273.8284.919 1.419 1.794 1.6404.3813.0964.9449.0759 1.3297-.0484.7415-.2395 1.368-.8767 1.6089-1.6366l.0697-.2198.3264.1096c1.161.39 2.2134 1.0413 3.129 1.9366 1.0849 1.061 1.8142 2.2829 2.2176 3.7155l.079.2805-.1689.0756c-.7889.353-1.2652 1.2638-1.0914 2.0866.1672.7919.7946 1.396 1.5759 1.5175.8882.138 1.7792-.4011 2.0782-1.2575.3469-.9937-.2055-2.09-1.2146-2.4104-.1409-.0448-.297-.0814-.347-.0814-.0862 0-.0938-.0128-.1506-.2545-.3385-1.4397-1.2326-3.0012-2.3646-4.1292-.5791-.5772-1.4676-1.2477-2.0288-1.531-.1039-.0525-.1888-.1026-.1888-.1114 0-.009.931-.0159 2.0687-.0159h2.0688v1.1811l.0958.1073.0958.1072h3.1565l.1073-.1073.1073-.1074.009-1.5112c.0101-1.661.01-1.6647-.1871-1.781-.0858-.0506-.2419-.056-1.6282-.056h-1.5334l-.1116.1117-.1116.1116v1.1887h-5.9689l-.0223-.149c-.0615-.41-.3043-.8823-.633-1.2318-.3535-.3758-.7755-.6217-1.2647-.737-.2482-.0585-.823-.0592-1.0756-.001m-.0372 9.1302c-.0553.03-.14.1509-.2346.3352-1.723 3.3554-4.1678 8.1776-4.182 8.2486-.0436.218.1804.4549.3969.4198.0567-.009.989-.4191 2.0718-.9109s2.0056-.9086 2.0508-.9263c.0713-.0279.3408.0876 2.0523.8794 1.0836.5014 2.0274.932 2.0974.9572.1543.0554.2997.0178.418-.1082.181-.1926.2654-.003-2.0343-4.5771-1.497-2.9778-2.1337-4.2128-2.2047-4.277-.1137-.1028-.2873-.1192-.4316-.0407"></path>
+                  </svg>
+                  <h1 className="playfair-display-WebAndAppText">DevTrace</h1>
+                </div>
               </div>
 
-             
-            </div>
+              <div className="flex mb-5">
+                {/* Main Content */}
+                <div className="flex-1 w-full">
+                  {/* Welcome Section */}
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-8">
+                    Welcome back to,
+                  </h2>
 
-            <div className="flex mb-5">
-              {/* Main Content */}
-              <div className="flex-1 w-full">
-                {/* Welcome Section */}
-                <h2 className="text-2xl font-semibold text-gray-800 mb-8">
-                  Welcome back to, 
-                </h2>
-
-                <div className="">
-                  {/* Left Section - Delivery Info */}
-                  <div className="flex-1 bg-gray-50 rounded-2xl py-3 px-2">
-                    <div className="flex  w-full md:flex-row flex-col md:justify-between md:items-start justify-center items-center mb-6">
-                      <div>
-                        <div className="text-7xl font-bold text-gray-900 mb-2">
-                         Wrold's #1
+                  <div className="">
+                    {/* Left Section - Delivery Info */}
+                    <div className="flex-1 bg-gray-50 rounded-2xl py-3 px-2">
+                      <div className="flex  w-full md:flex-row flex-col md:justify-between md:items-start justify-center items-center mb-6">
+                        <div>
+                          <div className="text-7xl font-bold text-gray-900 mb-2">
+                            Wrold's #1
+                          </div>
+                          <div className="text-gray-600 text-lg">
+                            Web/App Tracking Site Open Source
+                          </div>
                         </div>
-                        <div className="text-gray-600 text-lg">
-                          Web/App Tracking Site Open Source
+                        <div>
+                          <img
+                            src="https://ik.imagekit.io/hassaan/DevTrace_ozYQTcy35"
+                            alt="Package"
+                            className="w-full h-full mr-5 object-contain"
+                          />
                         </div>
                       </div>
-                      <div>
-                        <img
-                          src="https://ik.imagekit.io/hassaan/DevTrace_ozYQTcy35"
-                          alt="Package"
-                          className="w-full h-full mr-5 object-contain"
-                        />
+
+                      <div className="mb-4">
+                        <p className="text-sm md:w-1/2 sm:w-1/3 w-full text-gray-600 mb-1">
+                          DevTrace tracks user interactions across your site and
+                          turns them into useful data. It’s built to help
+                          developers understand real user behavior without any
+                          extra complexity.
+                        </p>
                       </div>
-                    </div>
 
-                    <div className="mb-4">
-                      <p className="text-sm md:w-1/2 sm:w-1/3 w-full text-gray-600 mb-1">
-                        DevTrace tracks user interactions across your site and
-                        turns them into useful data. It’s built to help
-                        developers understand real user behavior without any
-                        extra complexity.
-                      </p>
+                      {IsUserLogin ? (
+                        <div className="flex gap-3">
+                          <Link
+                            to={"/projects/new"}
+                            className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600"
+                          >
+                            Add New Site
+                          </Link>
+                        </div>
+                      ) : (
+                        <div className="flex gap-3">
+                          <Link
+                            to={"/login"}
+                            className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600"
+                          >
+                            Get Start
+                          </Link>
+                        </div>
+                      )}
                     </div>
-
-                   {
-                    IsUserLogin ?  <div className="flex gap-3">
-                      <Link
-                        to={"/projects/new"}
-                        className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600"
-                      >
-                        Add New Site
-                      </Link>
-                    </div> :  <div className="flex gap-3">
-                      <Link
-                        to={"/login"}
-                        className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600"
-                      >
-                        Get Start
-                      </Link>
-                    </div>
-                   }
                   </div>
                 </div>
               </div>
-            </div>  
             </div>
           </div>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

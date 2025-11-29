@@ -18,13 +18,13 @@ const Navbar = () => {
   const UserMenu = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(UserData);
+    console.log(window.location.pathname);
     if (!UserData || UserData == undefined || UserData == null) {
       setIsUserLogin(false);
     } else {
       setIsUserLogin(true);
     }
-  }, [UserData]);
+  }, [UserData, window.location.pathname]);
   return (
     <nav class="h-[70px] sticky top-0 w-full px-6 md:px-16 lg:px-24 xl:px-32 flex items-center justify-between z-20 bg-white text-gray-700 shadow-[0px_4px_25px_0px_#0000000D] transition-all">
       DevTarce
@@ -140,16 +140,3 @@ const Navbar = () => {
 
 export default Navbar;
 
-{
-  /* <script>
-    const menuButtons = document.querySelectorAll('.menu-btn');
-    const mobileMenus = document.querySelectorAll('.mobile-menu');
-
-    menuButtons.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-            mobileMenus[index].classList.toggle('hidden');
-        });
-    });
-
-</script> */
-}

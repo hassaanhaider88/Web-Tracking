@@ -1,58 +1,62 @@
+import { BiArrowBack } from "react-icons/bi";
 import React, { useEffect, useState, useRef } from "react";
 import API from "../utils/api";
 import { useParams } from "react-router-dom";
 import { connectSocket, getSocket } from "../store/socket";
 import copy from "copy-to-clipboard";
 import { toast } from "react-hot-toast";
+import ControlDashboardUI from "../Components/ProjectDetails";
+
 
 const TRACK_SNIPPET = (
   key
-) => `<!-- Web Tracking script: paste before </body> on the site you want to track -->
-<script>
+) => `<script>
 (function () {
   const API = "http://localhost:3000/api/track";
   const API_KEY = "${key}";
 
-  function getClientInfo() {
-    return {
-      ua: navigator.userAgent || "",
-      platform: navigator.platform || "",
-      language: navigator.language || "",
-      screen: { width: screen.width, height: screen.height }
-    };
-  }
+  let hasPinged = false;
 
   function sendPing() {
+    // block duplicates by page load
+    if (hasPinged) return;
+    hasPinged = true;
+
+    // block duplicates per tab
+    if (sessionStorage.getItem("hasPinged") === "true") return;
+    sessionStorage.setItem("hasPinged", "true");
+
     const payload = {
       apiKey: API_KEY,
       url: location.href,
       path: location.pathname + location.search,
       referrer: document.referrer || null,
       timestamp: Date.now(),
-      client: getClientInfo()
-    };
-    const body = JSON.stringify(payload);
-
-    try {
-         fetch(API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body
-        })
-      } 
-      catch(e){
-      console.log(e)
+      client: {
+        ua: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screen: { width: screen.width, height: screen.height }
       }
+    };
+
+    fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).catch(console.error);
   }
 
+  // Run only once
   if (document.readyState === "complete" || document.readyState === "interactive") {
     sendPing();
   } else {
-    window.addEventListener("DOMContentLoaded", sendPing);
+    document.addEventListener("DOMContentLoaded", sendPing, { once: true });
   }
-  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === 'visible') sendPing(); });
+
 })();
-</script>`;
+</script>
+`;
 
 export default function ProjectDetail() {
   const { id } = useParams();
@@ -66,6 +70,8 @@ export default function ProjectDetail() {
     connectSocket();
     const socket = getSocket();
     socketRef.current = socket;
+    console.log(project);
+    console.log(visits);
     if (socket) {
       socket.on("visit", (payload) => {
         if (payload.projectId === id) {
@@ -107,57 +113,69 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="p-6">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">{project?.name || "Project"}</h1>
-        <div>
-          <button onClick={copySnippet} className="btn">
-            Copy snippet
-          </button>
-        </div>
-      </header>
-
-      <section className="mb-6">
-        <h2 className="font-semibold">Summary</h2>
-        <div className="flex space-x-4 mt-2">
-          <div className="bg-white p-4 rounded shadow">
-            Total Visits
-            <br />
-            <strong>{summary.totalVisits || 0}</strong>
+    <>
+      <div
+        onClick={() => window.history.back()}
+        id="ReturnArrow"
+        className="w-12 h-12 fixed left-3 top-3 cursor-pointer active:scale-95 duration-200 transition-all rounded-full bg-orange-500 flex justify-center items-center"
+      >
+        <BiArrowBack size={26} color="white" />
+      </div>
+      <div className="mt-20">
+        <ControlDashboardUI/>
+      </div>
+      {/* <div className="p-6 mt-20">
+        <header className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">{project?.name || "Project"}</h1>
+          <div>
+            <button onClick={copySnippet} className="btn">
+              Copy snippet
+            </button>
           </div>
-          <div className="bg-white p-4 rounded shadow">
-            Unique IPs
-            <br />
-            <strong>{summary.uniqueIPs || 0}</strong>
-          </div>
-        </div>
-      </section>
+        </header>
 
-      <section>
-        <h2 className="font-semibold mb-2">Live Visits</h2>
-        <div className="space-y-2 flex flex-wrap w-full justify-center items-center gap-4">
-          {visits.map((v) => (
-            <div
-              key={v._id || Math.random()}
-              className="bg-white shrink-0 w-fit p-3 rounded shadow flex justify-between"
-            >
-              <div>
-                <div className="text-sm text-gray-600">
-                  {maskIp(v.ip)} • {v.geo?.country || ""}{" "}
-                  {v.geo?.city ? "/" + v.geo.city : ""}
-                </div>
-                <div className="font-medium">{v.path}</div>
-                <div className="text-xs text-gray-500">
-                  {v.browser} • {v.os} • {v.device}
-                </div>
-              </div>
-              <div className="text-xs text-gray-400">
-                {new Date(v.createdAt).toLocaleString()}
-              </div>
+        <section className="mb-6">
+          <h2 className="font-semibold">Summary</h2>
+          <div className="flex space-x-4 mt-2">
+            <div className="bg-white p-4 rounded shadow">
+              Total Visits
+              <br />
+              <strong>{summary.totalVisits || 0}</strong>
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
+            <div className="bg-white p-4 rounded shadow">
+              Unique IPs
+              <br />
+              <strong>{summary.uniqueIPs || 0}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-semibold mb-2">Live Visits</h2>
+          <div className="space-y-2 flex flex-wrap w-full justify-center items-center gap-4">
+            {visits.map((v) => (
+              <div
+                key={v._id || Math.random()}
+                className="bg-white shrink-0 w-fit p-3 rounded shadow flex justify-between"
+              >
+                <div>
+                  <div className="text-sm text-gray-600">
+                    {maskIp(v.ip)} • {v.geo?.country || ""}{" "}
+                    {v.geo?.city ? "/" + v.geo.city : ""}
+                  </div>
+                  <div className="font-medium">{v.path}</div>
+                  <div className="text-xs text-gray-500">
+                    {v.browser} • {v.os} • {v.device}
+                  </div>
+                </div>
+                <div className="text-xs text-gray-400">
+                  {new Date(v.createdAt).toLocaleString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div> */}
+    </>
   );
 }

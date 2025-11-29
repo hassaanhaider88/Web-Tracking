@@ -11,7 +11,7 @@ export default function Dashboard(){
   useEffect(()=>{
     if(token) connectSocket()
     fetchProjects()
-  },[])
+  },[window.location])
 
   async function fetchProjects(){
     try{
