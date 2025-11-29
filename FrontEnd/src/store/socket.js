@@ -1,12 +1,13 @@
 import { io } from 'socket.io-client'
 import { getToken } from './authHelpers'
+import { BackEndURI } from '../utils/api'
 
 let socket = null
 
 export function connectSocket(){
   if (socket) return socket
   const token = getToken()
-  socket = io('http://localhost:3000', { auth: { token } })
+  socket = io(BackEndURI, { auth: { token } })
   socket.on('connect', () => {
     console.log('socket connected', socket.id)
   })

@@ -11,9 +11,11 @@ const { lookup } = require("ip-location-api");
 const authRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/projects");
 const trackingRoutes = require("./routes/tracking");
+const UserRouter = require("./routes/user");
 const initializeSocket = require("./socket");
+const User = require("./models/User");
 
-const PORT = process.env.PORT || 4000 
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 const server = http.createServer(app);
@@ -56,6 +58,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", UserRouter);
 app.use("/api", projectRoutes);
 app.use("/api", trackingRoutes);
 
@@ -73,8 +76,6 @@ app.use((err, req, res, next) => {
     message: "Internal server error",
   });
 });
-
-
 
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
