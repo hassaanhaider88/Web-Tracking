@@ -8,6 +8,7 @@ import ProjectDetail from './pages/ProjectDetail'
 import { useAuthStore } from './store/auth'
 import HomePage from './pages/Home'
 import MyDashboard from './pages/MyDashboard'
+import ContactUs from './pages/ConatactUs'
 
 function Protected({ children }) {
   const token = useAuthStore(s => s.token)
@@ -21,9 +22,11 @@ export default function App(){
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Protected><MyDashboard /></Protected>} />
+      <Route path="/contact" element={<ContactUs/>} />
       <Route path="/projects/new" element={<Protected><NewProject /></Protected>} />
       <Route path="/projects/:id" element={<Protected><ProjectDetail /></Protected>} />
       <Route path="/" element={<HomePage />} />
+
       {/* <Route path='/mydash' element={<MyDashboard/>} /> */}
 
       {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}

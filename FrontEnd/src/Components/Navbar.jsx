@@ -9,20 +9,20 @@ import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross2 } from "react-icons/rx";
-import {useGlobalState} from '@hmk_codeweb88/useglobalstate'
+import { useGlobalState } from "@hmk_codeweb88/useglobalstate";
 
 const Navbar = () => {
   const { UserData } = useContext(UserContext);
-  const [IsUserLogin, setIsUserLogin] = useGlobalState("IsUserLogin",false);
+  const [IsUserLogin, setIsUserLogin] = useGlobalState("IsUserLogin", false);
   const [IsMobileMenuShow, setIsMobileMenuShow] = useState(false);
   const UserMenu = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
     console.log(UserData);
-    if (!UserData) {
-      setIsUserLogin(true);
-    } else {
+    if (!UserData || UserData == undefined || UserData == null) {
       setIsUserLogin(false);
+    } else {
+      setIsUserLogin(true);
     }
   }, [UserData]);
   return (
