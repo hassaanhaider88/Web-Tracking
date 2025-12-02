@@ -7,11 +7,13 @@ import copy from "copy-to-clipboard";
 import { toast } from "react-hot-toast";
 import ControlDashboardUI from "../Components/ProjectDetails";
 import CodeCard from "../Components/CodeSnippet";
+import getUniqueUsers from "../utils/getUniqueUser";
+// import UniqueUserCard from "../Components/UniqueUserCard";
+import ModernUniqueUserCard from "../Components/UniqueUserCard";
 
-
-const TRACK_SNIPPET = (
-  key
-) => `<script>
+const TRACK_SNIPPET = (key) => `
+<!-- Paste This Code Into Your Route .html File -->
+<script>
 (function () {
   const API = "${BackEndURI}/api/track";
   const API_KEY = "${key}";
@@ -26,9 +28,18 @@ const TRACK_SNIPPET = (
     // block duplicates per tab
     if (sessionStorage.getItem("hasPinged") === "true") return;
     sessionStorage.setItem("hasPinged", "true");
-
+    function getOrCreateUserId() {
+    let id = localStorage.getItem("uniqueUserId");
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem("uniqueUserId", id);
+    }
+    return id;
+  }
+    const userId = getOrCreateUserId();
     const payload = {
       apiKey: API_KEY,
+      userId,
       url: location.href,
       path: location.pathname + location.search,
       referrer: document.referrer || null,
@@ -64,9 +75,9 @@ export default function ProjectDetail() {
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [visits, setVisits] = useState([]);
-  const [summary, setSummary] = useState({ totalVisits: 0, uniqueIPs: 0 });
+  const [summary, setSummary] = useState({ totalVisits: 0 });
   const [LoadingState, setLoadingState] = useState(false);
-
+  const [AllUniqueUser, setAllUniqueUser] = useState([]);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -88,122 +99,75 @@ export default function ProjectDetail() {
       // cleanup
       try {
         socketRef.current?.off && socketRef.current.off("visit");
+        console.log(summary);
       } catch (e) {}
     };
   }, [id]);
 
   async function fetchData() {
-    setLoadingState(true)
+    setLoadingState(true);
     try {
       const res = await API.get(`/projects/${id}/visits`);
-      console.log(res)
+      console.log(res);
       setVisits(res.data.visits || []);
       setSummary(res.data.summary || {});
       setProject(res.data.project || null);
-      setLoadingState(false)
+      var ResUsers = getUniqueUsers(res.data.visits || []);
+      setAllUniqueUser(ResUsers);
+      console.log(ResUsers);
+
+      setLoadingState(false);
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.error || "Failed");
-      setLoadingState(false)
+      setLoadingState(false);
       navigate("/dashboard");
     }
   }
 
-  function maskIp(ip = "") {
-    if (!ip) return "";
-    const parts = ip.split(".");
-    if (parts.length === 4)
-      return parts[0] + "." + parts[1] + ".***." + parts[3];
-    return ip;
-  }
 
-  function copySnippet() {
-    copy(TRACK_SNIPPET(project?.apiKey || "PASTE_PROJECT_API_KEY_HERE"));
-    toast.success("Snippet copied");
-  }
-
-  return (
-    LoadingState ? 
-   "Loading..." : <div className="min-h-screen flex flex-col items-center justify-center"
-    style={{
+  return LoadingState ? (
+    "Loading..."
+  ) : (
+    <div
+      className="min-h-screen flex flex-col items-center justify-center"
+      style={{
         background: "linear-gradient(135deg, #e0eafc, #c5d7f1)", // Soft gradient background
       }}
     >
       <div
-
         onClick={() => window.history.back()}
         id="ReturnArrow"
         className="w-12 h-12 fixed left-3 top-3 cursor-pointer active:scale-95 duration-200 transition-all rounded-full bg-orange-500 flex justify-center items-center"
       >
         <BiArrowBack size={26} color="white" />
       </div>
-      <div 
-      
-      className="mt-20">
-        <ControlDashboardUI 
-        projectDetails={{
-        projectName: project?.name,
-        porjectAPIKey : project?.apiKey,
-        projectVisits: summary.totalVisits || 0,
-        projectUniqueUsers: summary.uniqueIPs || 0,
-        projectErrors: "0",
-        }}/>
+      <div className="mt-20">
+        <ControlDashboardUI
+          projectDetails={{
+            projectName: project?.name,
+            porjectAPIKey: project?.apiKey,
+            projectVisits: summary.totalVisits || 0,
+            projectUniqueUsers: AllUniqueUser.length || 0,
+            projectErrors: "0",
+          }}
+        />
       </div>
-      <div className="CopyCodeView">
-        <CodeCard initialCode={TRACK_SNIPPET(project?.apiKey || "PASTE_PROJECT_API_KEY_HERE")}/>
+      <div className="CopyCodeView science-gothic-Code">
+        <CodeCard
+          initialCode={TRACK_SNIPPET(
+            project?.apiKey || "PASTE_PROJECT_API_KEY_HERE"
+          )}
+        />
       </div>
-      {/* <div className="p-6 mt-20">
-        <header className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">{project?.name || "Project"}</h1>
-          <div>
-            <button onClick={copySnippet} className="btn">
-              Copy snippet
-            </button>
-          </div>
-        </header>
-
-        <section className="mb-6">
-          <h2 className="font-semibold">Summary</h2>
-          <div className="flex space-x-4 mt-2">
-            <div className="bg-white p-4 rounded shadow">
-              Total Visits
-              <br />
-              <strong>{summary.totalVisits || 0}</strong>
-            </div>
-            <div className="bg-white p-4 rounded shadow">
-              Unique IPs
-              <br />
-              <strong>{summary.uniqueIPs || 0}</strong>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2 className="font-semibold mb-2">Live Visits</h2>
-          <div className="space-y-2 flex flex-wrap w-full justify-center items-center gap-4">
-            {visits.map((v) => (
-              <div
-                key={v._id || Math.random()}
-                className="bg-white shrink-0 w-fit p-3 rounded shadow flex justify-between"
-              >
-                <div>
-                  <div className="text-sm text-gray-600">
-                    {maskIp(v.ip)} • {v.geo?.country || ""}{" "}
-                    {v.geo?.city ? "/" + v.geo.city : ""}
-                  </div>
-                  <div className="font-medium">{v.path}</div>
-                  <div className="text-xs text-gray-500">
-                    {v.browser} • {v.os} • {v.device}
-                  </div>
-                </div>
-                <div className="text-xs text-gray-400">
-                  {new Date(v.createdAt).toLocaleString()}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div> */}
-    </div> 
+      <h1 className="py-5 text-5xl">Unique User Info</h1>
+      <div className="w-full flex flex-col px-5 py-4 gap-5">
+        {AllUniqueUser.length > 0
+          ? AllUniqueUser.map((user, index) => {
+              return <ModernUniqueUserCard user={user} key={index} />;
+            })
+          : "Nothing to Show"}
+      </div>
+    </div>
   );
 }

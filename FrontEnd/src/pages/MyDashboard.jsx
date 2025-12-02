@@ -12,26 +12,32 @@ import { useAuthStore } from "../store/auth";
 import { Link } from "react-router-dom";
 import ModalBox from "../Components/ModalBox";
 import API from "../utils/api";
+import toast from "react-hot-toast";
 
 export default function MyDashboard() {
   const { UserData } = useContext(UserContext);
   const [IsModalOpen, setIsModalOpen] = useState(false);
   const [IsConfrimed, setIsConfrimed] = useState(false);
   const [AllProjects, setAllProjects] = useState([]);
+  const [UniqueUser, setUniqueUser] = useState({});
   const [DelProjectId, setDelProjectId] = useState("");
   const [ShowUserMenu, setShowUserMenu] = useState(false);
-
+  const [LoadingProjects, setLoadingProjects] = useState(false);
   useEffect(() => {
     fetchProjects();
   }, [IsConfrimed, window.location.pathname]);
 
   async function fetchProjects() {
     try {
+      setLoadingProjects(true);
       const res = await API.get("/mywebsites");
       setAllProjects(res.data.projects || []);
       console.log(res.data.projects);
+      setLoadingProjects(false);
     } catch (err) {
       console.error(err);
+      toast.error(err.response?.data?.error || "Failed");
+      setLoadingProjects(false);
     }
   }
 
@@ -160,7 +166,8 @@ export default function MyDashboard() {
                 </div>
 
                 {/* Recent Sites Table */}
-                {AllProjects.length > 0 ? (
+                
+                {LoadingProjects ? "Loading.." : AllProjects.length > 0 ? (
                   <div className="bg-gray-50 rounded-2xl p-6">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                       Your Recent Sites
@@ -260,7 +267,7 @@ export default function MyDashboard() {
                     </svg>
                     <p>Nothing to Show</p>
                   </div>
-                )}
+                ) }
               </div>
             </div>
           </div>

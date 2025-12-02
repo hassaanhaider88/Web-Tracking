@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const visitSchema = new mongoose.Schema({
   project: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project',
+    ref: "Project",
     required: true,
-    index: true
+    index: true,
   },
-  ip: {
+  uniqueUserId: {
     type: String,
-    required: true
+    index: true,
   },
+
   country: String,
   ua: String,
   browser: String,
@@ -18,22 +19,22 @@ const visitSchema = new mongoose.Schema({
   device: String,
   path: {
     type: String,
-    default: '/'
+    default: "/",
   },
   referrer: String,
   createdAt: {
     type: Date,
     default: Date.now,
-    index: true
-  }
+    index: true,
+  },
 });
 
 visitSchema.index({ project: 1, createdAt: -1 });
 
-visitSchema.methods.toJSON = function() {
+visitSchema.methods.toJSON = function () {
   const visit = this.toObject();
   delete visit.__v;
   return visit;
 };
 
-module.exports = mongoose.model('Visit', visitSchema);
+module.exports = mongoose.model("Visit", visitSchema);

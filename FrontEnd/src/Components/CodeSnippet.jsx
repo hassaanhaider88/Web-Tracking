@@ -23,7 +23,7 @@ export default function CodeCard({
 
 
   return (
-    <div className={`mx-auto ${width} ${height} transform transition-all`}>
+    <div className={`mx-auto ${width} ${height} font-semibold transform transition-all`}>
       <div
         className="rounded-lg bg-[#24233b] shadow-[0px_10px_10px_rgba(73,70,92,0.9)] overflow-hidden"
         style={{ minWidth: 300 }}
@@ -39,7 +39,7 @@ export default function CodeCard({
 
             <div className="ml-4">
               <p id="title2" className="text-white text-sm select-none">
-                Code.js
+                Code Snippet.js
               </p>
             </div>
             <button onClick={()=>hanleCopySnippetCode(initialCode)} className="CopyKey">
@@ -54,10 +54,11 @@ export default function CodeCard({
           <textarea
             id="code"
             name="code"
-            readOnly={!editable}
+            readOnly={true}
+            spellCheck={false}
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className={`w-full ${height === "h-[600px]" ? "h-[530px]" : "h-[550px]"} resize-none rounded-md border-0 bg-[#49465c] text-white p-3 text-xs leading-5 outline-none`}
+            className={`w-full ${height === "h-[600px]" ? "h-[530px]" : "h-[550px]"} resize-none rounded-md science-gothic-Code border-0 bg-[#49465c] text-white p-3 text-xs leading-5 outline-none`}
           />
         </div>
       </div>

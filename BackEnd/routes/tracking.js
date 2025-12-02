@@ -22,10 +22,7 @@ const trackingLimiter = rateLimit({
 });
 
 router.post("/track", trackingLimiter, async (req, res) => {
-
   const country = await requestCountry(req);
-
-  console.log({ country });
   try {
     const apiKey = req.body.apiKey || req.headers["x-api-key"];
 
@@ -52,10 +49,11 @@ router.post("/track", trackingLimiter, async (req, res) => {
 
     const userAgent = req.body.client?.ua || req.headers["user-agent"] || "";
     const { browser, os, device } = parseUserAgent(userAgent);
+    console.log(req.body.userId)
 
     const visitData = {
       project: project._id,
-      ip,
+      uniqueUserId: req.body.userId,
       country: country,
       ua: userAgent,
       browser,
