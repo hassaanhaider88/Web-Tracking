@@ -11,13 +11,7 @@ const visitSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  geo: {
-    country: String,
-    region: String,
-    city: String,
-    lat: Number,
-    lon: Number
-  },
+  country: String,
   ua: String,
   browser: String,
   os: String,

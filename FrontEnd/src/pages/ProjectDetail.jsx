@@ -1,18 +1,19 @@
 import { BiArrowBack } from "react-icons/bi";
 import React, { useEffect, useState, useRef } from "react";
-import API from "../utils/api";
-import { useParams } from "react-router-dom";
+import API, { BackEndURI } from "../utils/api";
+import { useNavigate, useParams } from "react-router-dom";
 import { connectSocket, getSocket } from "../store/socket";
 import copy from "copy-to-clipboard";
 import { toast } from "react-hot-toast";
 import ControlDashboardUI from "../Components/ProjectDetails";
+import CodeCard from "../Components/CodeSnippet";
 
 
 const TRACK_SNIPPET = (
   key
 ) => `<script>
 (function () {
-  const API = "http://localhost:3000/api/track";
+  const API = "${BackEndURI}/api/track";
   const API_KEY = "${key}";
 
   let hasPinged = false;
@@ -60,9 +61,12 @@ const TRACK_SNIPPET = (
 
 export default function ProjectDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [visits, setVisits] = useState([]);
   const [summary, setSummary] = useState({ totalVisits: 0, uniqueIPs: 0 });
+  const [LoadingState, setLoadingState] = useState(false);
+
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -89,13 +93,19 @@ export default function ProjectDetail() {
   }, [id]);
 
   async function fetchData() {
+    setLoadingState(true)
     try {
       const res = await API.get(`/projects/${id}/visits`);
+      console.log(res)
       setVisits(res.data.visits || []);
       setSummary(res.data.summary || {});
       setProject(res.data.project || null);
+      setLoadingState(false)
     } catch (err) {
       console.error(err);
+      toast.error(err.response?.data?.error || "Failed");
+      setLoadingState(false)
+      navigate("/dashboard");
     }
   }
 
@@ -113,16 +123,34 @@ export default function ProjectDetail() {
   }
 
   return (
-    <>
+    LoadingState ? 
+   "Loading..." : <div className="min-h-screen flex flex-col items-center justify-center"
+    style={{
+        background: "linear-gradient(135deg, #e0eafc, #c5d7f1)", // Soft gradient background
+      }}
+    >
       <div
+
         onClick={() => window.history.back()}
         id="ReturnArrow"
         className="w-12 h-12 fixed left-3 top-3 cursor-pointer active:scale-95 duration-200 transition-all rounded-full bg-orange-500 flex justify-center items-center"
       >
         <BiArrowBack size={26} color="white" />
       </div>
-      <div className="mt-20">
-        <ControlDashboardUI/>
+      <div 
+      
+      className="mt-20">
+        <ControlDashboardUI 
+        projectDetails={{
+        projectName: project?.name,
+        porjectAPIKey : project?.apiKey,
+        projectVisits: summary.totalVisits || 0,
+        projectUniqueUsers: summary.uniqueIPs || 0,
+        projectErrors: "0",
+        }}/>
+      </div>
+      <div className="CopyCodeView">
+        <CodeCard initialCode={TRACK_SNIPPET(project?.apiKey || "PASTE_PROJECT_API_KEY_HERE")}/>
       </div>
       {/* <div className="p-6 mt-20">
         <header className="flex justify-between items-center mb-6">
@@ -176,6 +204,6 @@ export default function ProjectDetail() {
           </div>
         </section>
       </div> */}
-    </>
+    </div> 
   );
 }

@@ -16,8 +16,11 @@ const UserContextProvider = ({ children }) => {
         "content-type": "application/json",
       },
       body: JSON.stringify({ wt_token: localStorage.getItem("wt_token") }),
+    }).catch((err) => {
+      console.log(err);
+      return setUserData(null);
     });
-    const data = await res.json();
+    const data = await res?.json();
     if(!data){
       setUserData({})
     }else{

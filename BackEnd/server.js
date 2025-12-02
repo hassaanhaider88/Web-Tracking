@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const http = require("http");
 const requestIp = require("request-ip");
 const { lookup } = require("ip-location-api");
+const PORT = process.env.PORT || 3000;
 
 const authRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/projects");
@@ -77,6 +78,10 @@ app.use((err, req, res, next) => {
   });
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b233fd798780f72cd5750af9ae801b3fda6b98e7
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);

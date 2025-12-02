@@ -24,10 +24,10 @@ const getGeoData = (ip) => {
   if (cleanIp === '127.0.0.1' || cleanIp === 'localhost' || cleanIp.startsWith('192.168.') || cleanIp.startsWith('10.')) {
     return {
       country: 'Local',
-      region: 'Local',
-      city: 'Local',
-      lat: null,
-      lon: null
+      // region: 'Local',
+      // city: 'Local',
+      // lat: null,
+      // lon: null
     };
   }
 
@@ -36,19 +36,19 @@ const getGeoData = (ip) => {
   if (!geo) {
     return {
       country: 'Unknown',
-      region: 'Unknown',
-      city: 'Unknown',
-      lat: null,
-      lon: null
+      // region: 'Unknown',
+      // city: 'Unknown',
+      // lat: null,
+      // lon: null
     };
   }
 
   return {
     country: geo.country || 'Unknown',
-    region: geo.region || 'Unknown',
-    city: geo.city || 'Unknown',
-    lat: geo.ll ? geo.ll[0] : null,
-    lon: geo.ll ? geo.ll[1] : null
+    // region: geo.region || 'Unknown',
+    // city: geo.city || 'Unknown',
+    // lat: geo.ll ? geo.ll[0] : null,
+    // lon: geo.ll ? geo.ll[1] : null
   };
 };
 

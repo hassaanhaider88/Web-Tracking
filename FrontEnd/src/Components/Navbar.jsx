@@ -18,8 +18,8 @@ const Navbar = () => {
   const UserMenu = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(window.location.pathname);
-    if (!UserData || UserData == undefined || UserData == null) {
+    console.log(UserData);
+    if (!UserData || !UserData.email) {
       setIsUserLogin(false);
     } else {
       setIsUserLogin(true);
