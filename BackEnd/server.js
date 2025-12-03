@@ -11,6 +11,7 @@ const projectRoutes = require("./routes/projects");
 const trackingRoutes = require("./routes/tracking");
 const WebsiteRouter = require('./routes/WebsiteOwnerOTP')
 const UserRouter = require("./routes/user");
+const queryRoutes = require("./routes/Query");
 const initializeSocket = require("./socket");
 
 
@@ -56,6 +57,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/user", UserRouter);
 app.use('/api/website',WebsiteRouter)
+app.use('/api/query',queryRoutes)
 app.use("/api", projectRoutes);
 app.use("/api", trackingRoutes);
 

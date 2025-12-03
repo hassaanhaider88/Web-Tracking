@@ -2,16 +2,39 @@ import toast from "react-hot-toast";
 import { MdContactSupport } from "react-icons/md";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import { useState } from "react";
+import { BackEndURI } from "../utils/api";
 const ContactUs = () => {
   const navigate = useNavigate();
-  const submit = (e) => {
-    e.preventDefault();
-    toast.success("Message Sent Successfully");
-    navigate("/");
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("");
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("Submitting...");
+
+    try {
+      const res = await axios.post(`${BackEndURI}/api/query/submit`, form);
+      if (res.data.success) {
+        setStatus("Query submitted successfully!");
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        setStatus("Failed to submit query.");
+      }
+    } catch (err) {
+      setStatus("Error submitting query.");
+    }
+  };
+
   return (
-    <form onSubmit={submit} className="flex min-h-screen flex-col items-center text-sm">
-      <Navbar/>
+    <form
+      onSubmit={handleSubmit}
+      className="flex min-h-screen flex-col items-center text-sm"
+    >
+      <Navbar />
       <h1 className="text-4xl mt-3 font-semibold text-slate-700 pb-4">
         Get in touch with us
       </h1>
@@ -30,6 +53,7 @@ const ContactUs = () => {
             placeholder="Your Full Name"
             className="h-12  p-2 mt-2 w-full border border-gray-500/30 rounded-2xl outline-none focus:border-[#F97316]"
             type="text"
+            onChange={(e) => handleChange(e)}
             required
           />
         </div>
@@ -38,6 +62,7 @@ const ContactUs = () => {
             Your Email
           </label>
           <input
+            onChange={(e) => handleChange(e)}
             placeholder="Your Working Email"
             className="h-12 p-2 mt-2 w-full border border-gray-500/30 rounded-2xl outline-none focus:border-[#F97316]"
             type="email"
@@ -51,6 +76,7 @@ const ContactUs = () => {
           Message
         </label>
         <textarea
+          onChange={(e) => handleChange(e)}
           placeholder="Your Detail Message"
           className="w-full mt-2 p-2 h-40 border border-gray-500/30 rounded-2xl resize-none outline-none focus:border-[#F97316]"
           required

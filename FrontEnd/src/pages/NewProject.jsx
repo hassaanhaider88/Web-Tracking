@@ -13,6 +13,7 @@ export default function NewProject() {
     e.preventDefault();
     setIsFormSubmiting(true);
     try {
+      
       const res = await API.post("/projects", form);
       toast.success("Project created");
       nav("/dashboard");
@@ -26,12 +27,6 @@ export default function NewProject() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      {/* <form className="bg-white p-6 rounded shadow w-96" onSubmit={submit}>
-        <h2 className="text-xl font-bold mb-4">New Project</h2>
-        <input className="input" placeholder="Project name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required />
-        <input className="input mt-2" placeholder="https://example.com" value={form.siteUrl} onChange={e=>setForm({...form,siteUrl:e.target.value})} required />
-        <button className="mt-4 btn primary w-full" type="submit">Create</button>
-      </form> */}
       <form
         onSubmit={submit}
         className="flex flex-col items-center text-sm text-slate-800"
@@ -59,7 +54,7 @@ export default function NewProject() {
           </label>
           <div className="flex items-center mt-2 mb-4 h-10 pl-3 border border-slate-300 rounded-full focus-within:ring-2 focus-within:ring-orange-400 transition-all overflow-hidden">
             <input
-            type="url"
+              type="url"
               className="input input h-full px-2 w-full outline-none bg-transparent"
               placeholder="https://example.com"
               value={form.siteUrl}
