@@ -125,7 +125,6 @@ export default function ProjectDetail() {
     }
   }
 
-
   return LoadingState ? (
     "Loading..."
   ) : (

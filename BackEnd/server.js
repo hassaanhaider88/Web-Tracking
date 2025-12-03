@@ -5,16 +5,14 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const http = require("http");
-const requestIp = require("request-ip");
-const { lookup } = require("ip-location-api");
-
 
 const authRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/projects");
 const trackingRoutes = require("./routes/tracking");
+const WebsiteRouter = require('./routes/WebsiteOwnerOTP')
 const UserRouter = require("./routes/user");
 const initializeSocket = require("./socket");
-const User = require("./models/User");
+
 
 const PORT = process.env.PORT || 4000;
 
@@ -43,11 +41,8 @@ mongoose
   });
 
 app.get("/", async (req, res) => {
-  // const clientIp = requestIp.getClientIp(req);
-  // var ip = "192.168.131.206";
-  // var location = await lookup(ip);
-  res.send("location nothing");
-  // next();
+  res.send("Dev Trace APIs Working Fine");
+
 });
 
 app.get("/api/health", (req, res) => {
@@ -60,6 +55,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", UserRouter);
+app.use('/api/website',WebsiteRouter)
 app.use("/api", projectRoutes);
 app.use("/api", trackingRoutes);
 
