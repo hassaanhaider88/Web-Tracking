@@ -56,7 +56,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", UserRouter);
-app.use('/api/website',WebsiteRouter)
+app.use('/api/website',WebsiteRouter) // for website ownershipt verify
 app.use('/api/query',queryRoutes)
 app.use("/api", projectRoutes);
 app.use("/api", trackingRoutes);

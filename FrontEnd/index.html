@@ -1,36 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>DevTrace BY HMK CodeWeb</title>
+
+    <title>DevTrace by HMK CodeWeb | Website Tracking & Insights</title>
+
+    <!-- Primary SEO -->
+    <meta
+      name="description"
+      content="DevTrace by HMK CodeWeb helps developers and site owners track visits, verify website ownership, and view clean analytics. Fast, lightweight and privacy-focused."
+    />
+    <meta
+      name="keywords"
+      content="DevTrace, HMK CodeWeb, website analytics, site tracking, visit tracker, developer tools, website ownership verification, tracking tool"
+    />
+    <meta name="author" content="HMK CodeWeb" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://your-domain.com/" />
+
+    <!-- Open Graph (Facebook, LinkedIn) -->
+    <meta property="og:title" content="DevTrace by HMK CodeWeb" />
+    <meta
+      property="og:description"
+      content="Track website visits, verify ownership and get clean analytics with DevTrace."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-domain.com/" />
+    <meta
+      property="og:image"
+      content="https://your-domain.com/your-preview-image.png"
+    />
+
+    <!-- Twitter Preview Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DevTrace by HMK CodeWeb" />
+    <meta
+      name="twitter:description"
+      content="Track website visits and verify ownership in seconds with DevTrace."
+    />
+    <meta
+      name="twitter:image"
+      content="https://your-domain.com/your-preview-image.png"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/DevTrace.svg" />
+
+    <!-- Custom Scrollbar -->
     <style>
       ::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #F97316;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #f97416a1;
-}
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f97316;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f97416a1;
+      }
     </style>
   </head>
+
   <body class="overflow-x-hidden scienceGothicWhole">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "DevTrace by HMK CodeWeb",
+        "url": "https://your-domain.com",
+        "description": "DevTrace helps website owners track visits and verify ownership.",
+        "author": {
+          "@type": "Person",
+          "name": "Hassaan Haider"
+        },
+        "applicationCategory": "DeveloperApplication"
+      }
+    </script>
   </body>
- </html> 
+</html>

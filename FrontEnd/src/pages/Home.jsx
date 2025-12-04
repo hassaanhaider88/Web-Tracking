@@ -12,10 +12,23 @@ import Navbar from "../Components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalState } from "@hmk_codeweb88/useglobalstate";
 import Footer from "../Components/Footer";
+import { useEffect } from "react";
 
 export default function HomePage() {
-  const [IsUserLogin] = useGlobalState("IsUserLogin");
   const navigate = useNavigate();
+  const [IsUserLogin,setIsUserLogin] = useGlobalState("IsUserLogin");
+  useEffect(() => {
+    if(!IsUserLogin){
+    var IsUser = localStorage.getItem('IsUserLogin')
+    if(IsUser){
+      setIsUserLogin(true)
+    }else{
+      setIsUserLogin(false)
+    }
+    }else{
+      setIsUserLogin(true)
+    } 
+  }, [window.location.pathname]);
 
   return (
     <div className="min-h-screen bg-gradient-to from-orange-100 via-orange-50 to-orange-100">

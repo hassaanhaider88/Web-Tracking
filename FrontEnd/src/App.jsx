@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -10,6 +10,9 @@ import HomePage from './pages/Home'
 import MyDashboard from './pages/MyDashboard'
 import ContactUs from './pages/ConatactUs'
 import AboutUs from './pages/AboutUs'
+import FoutZeroFour from './pages/FoutZeroFour'
+import { AnimatePresence } from 'framer-motion'
+import PageTransition from './Components/PageTransition'
 
 function Protected({ children }) {
   const token = useAuthStore(s => s.token)
@@ -17,21 +20,22 @@ function Protected({ children }) {
   return children
 }
 
+
 export default function App(){
+  const location = useLocation();
   return (
-    <Routes>
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Protected><MyDashboard /></Protected>} />
-      <Route path="/contact" element={<ContactUs/>} />
-      <Route path="/about" element={<AboutUs/>} />
-      <Route path="/projects/new" element={<Protected><NewProject /></Protected>} />
-      <Route path="/projects/:id" element={<Protected><ProjectDetail /></Protected>} />
-      <Route path="/" element={<HomePage />} />
-
-      {/* <Route path='/mydash' element={<MyDashboard/>} /> */}
-
-      {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
+    <AnimatePresence mode='wait'>
+    <Routes location={location} key={location.pathname}>
+       <Route path="/signup" element={<PageTransition><Signup /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/dashboard" element={<PageTransition><Protected><MyDashboard /></Protected></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><ContactUs/></PageTransition>} />
+        <Route path="/about" element={<PageTransition><AboutUs/></PageTransition>} />
+        <Route path="/projects/new" element={<PageTransition><Protected><NewProject /></Protected></PageTransition>} />
+        <Route path="/projects/:id" element={<PageTransition><Protected><ProjectDetail /></Protected></PageTransition>} />
+        <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+        <Route path="*" element={<PageTransition><FoutZeroFour /></PageTransition>} />
     </Routes>
+    </AnimatePresence>
   )
 }

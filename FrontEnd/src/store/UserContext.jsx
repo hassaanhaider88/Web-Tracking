@@ -7,7 +7,6 @@ const UserContextProvider = ({ children }) => {
   const [UserData, setUserData] = useState({});
   useEffect(() => {
     getUserData();
-    console.log(UserData);
   }, [window.location.pathname]);
   const getUserData = async () => {
     var res = await fetch(`${BackEndURI}/api/user`, {

@@ -1,5 +1,6 @@
 // controllers/websiteController.js
 const WebsiteOwnerShipOTP = require("../models/WebsiteOwnerShipOtp");
+const projectSchema = require("../models/Project");
 const crypto = require("crypto");
 const express = require("express");
 const router = express.Router();
@@ -7,17 +8,19 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 router.post("/add", async (req, res) => {
+  console.log(req.body)
   try {
     const { url } = req.body;
 
     const token = crypto.randomBytes(20).toString("hex");
-    const CheckURLExit = await WebsiteOwnerShipOTP.findOne({ websiteURI: url });
-    if (CheckURLExit) {
+   const CheckURLExitAsWhole = await projectSchema.findOne({ siteUrl: url })
+
+    if (CheckURLExitAsWhole) {
       res.json({
         success: false,
         message: "Website Exit Already",
         verificationTag: "",
-        CheckURLExit,
+        CheckURLExitAsWhole,
       });
     } else {
       const site = await WebsiteOwnerShipOTP.create({
@@ -41,13 +44,13 @@ router.post("/add", async (req, res) => {
 router.post("/verify", async (req, res) => {
   try {
     const { siteId } = req.body;
-    // console.log(siteId);
+
     const site = await WebsiteOwnerShipOTP.findById(siteId);
-    // console.log(site)
-    // if (!site) {
-    //   return res.json({ success: false, verified: false });
-    // }
-    console.log("URL I am fetching:", site.websiteURI);
+    if (!site) {
+      return res.json({ success: false, verified: false, message: "Site not found" });
+    }
+
+    console.log("Fetching:", site.websiteURI);
 
     const response = await axios.get(site.websiteURI, {
       headers: {
@@ -56,25 +59,25 @@ router.post("/verify", async (req, res) => {
     });
 
     const html = response.data;
-    console.log("Axios Response Status:", response.status);
-    console.log("HTML sample:", response.data.substring(0, 300));
 
-    console.log("HTML sample:", html.substring(0, 200));
+
+
     const $ = cheerio.load(html);
-    console.log(html.data.substring(0, 500));
 
     const meta = $('meta[name="DevTrace-Varify-HMK-CodeWeb"]').attr("content");
 
-    if (meta === site.OTPCode) {
+
+    if (meta && meta.trim() === site.OTPCode.trim()) {
       site.verified = true;
       await site.save();
-
       return res.json({ success: true, verified: true });
     }
 
-    return res.json({ success: false, verified: false });
+    return res.json({ success: false, verified: false, message: "Meta tag not matched" });
+
   } catch (err) {
-    return res.json({ success: false, verified: false });
+    console.error(err);
+    return res.json({ success: false, verified: false, error: err.message });
   }
 });
 

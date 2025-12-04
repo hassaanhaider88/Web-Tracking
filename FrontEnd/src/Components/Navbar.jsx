@@ -13,12 +13,13 @@ import { useGlobalState } from "@hmk_codeweb88/useglobalstate";
 
 const Navbar = () => {
   const { UserData } = useContext(UserContext);
-  const [IsUserLogin, setIsUserLogin] = useGlobalState("IsUserLogin", false);
+  const [IsUserLogin, setIsUserLogin] = useGlobalState("IsUserLogin", false, {
+    persist: true,
+  });
   const [IsMobileMenuShow, setIsMobileMenuShow] = useState(false);
   const UserMenu = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(UserData);
     if (!UserData || !UserData.email) {
       setIsUserLogin(false);
     } else {
@@ -26,7 +27,7 @@ const Navbar = () => {
     }
   }, [UserData, window.location.pathname]);
   return (
-    <nav class="h-[70px] sticky top-0 w-full px-6 md:px-16 lg:px-24 xl:px-32 flex items-center justify-between z-20 bg-white text-gray-700 shadow-[0px_4px_25px_0px_#0000000D] transition-all">
+    <nav class="h-[70px] my-4 sticky shadow-xl rounded-2xl top-0 w-full px-6 md:px-16 lg:px-24 xl:px-32 flex items-center justify-between z-20 bg-white text-gray-700  transition-all">
       DevTarce
       <ul class="md:flex hidden items-center gap-10">
         <li>
@@ -54,11 +55,11 @@ const Navbar = () => {
         <button
           title="Dashboard"
           onClick={() => navigate("/dashboard")}
-          className="Userbutton bg-black md:inline hidden w-16 h-16 rounded-full overflow-hidden oject-cover"
+          className="Userbutton bg-black md:inline hidden w-14 h-14 rounded-full overflow-hidden oject-cover"
         >
           <img
             className="w-full h-full object-cover"
-            src="https://i.pinimg.com/originals/d2/25/07/d2250772dc3221bfe9ed14d1d4cf0ec7.jpg"
+            src="https://i.pinimg.com/originals/29/f2/e8/29f2e8b5e59c5c235e4a12d24ca265ff.jpg"
             alt=""
           />
         </button>
@@ -139,4 +140,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

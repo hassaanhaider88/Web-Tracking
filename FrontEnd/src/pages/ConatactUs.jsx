@@ -4,25 +4,41 @@ import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import { useState } from "react";
 import { BackEndURI } from "../utils/api";
+import axios from "axios";
+
 const ContactUs = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+
+  // Separate states
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  // Handlers
+  const handleName = (e) => setName(e.target.value);
+  const handleEmail = (e) => setEmail(e.target.value);
+  const handleMessage = (e) => setMessage(e.target.value);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Submitting...");
 
+    const payload = { name, email, message };
+
+
     try {
-      const res = await axios.post(`${BackEndURI}/api/query/submit`, form);
+      const res = await axios.post(`${BackEndURI}/api/query/submit`, payload);
+
       if (res.data.success) {
         setStatus("Query submitted successfully!");
-        setForm({ name: "", email: "", message: "" });
+        setName("");
+        setEmail("");
+        setMessage("");
+        navigate('/')
       } else {
         setStatus("Failed to submit query.");
+        return;
       }
     } catch (err) {
       setStatus("Error submitting query.");
@@ -46,23 +62,22 @@ const ContactUs = () => {
 
       <div className="flex flex-col md:flex-row items-center gap-8 w-[350px] md:w-[700px]">
         <div className="w-full">
-          <label className="text-black/70" htmlFor="name">
-            Your Name
-          </label>
+          <label className="text-black/70">Your Name</label>
           <input
+            value={name}
+            onChange={handleName}
             placeholder="Your Full Name"
-            className="h-12  p-2 mt-2 w-full border border-gray-500/30 rounded-2xl outline-none focus:border-[#F97316]"
+            className="h-12 p-2 mt-2 w-full border border-gray-500/30 rounded-2xl outline-none focus:border-[#F97316]"
             type="text"
-            onChange={(e) => handleChange(e)}
             required
           />
         </div>
+
         <div className="w-full">
-          <label className="text-black/70" htmlFor="name">
-            Your Email
-          </label>
+          <label className="text-black/70">Your Email</label>
           <input
-            onChange={(e) => handleChange(e)}
+            value={email}
+            onChange={handleEmail}
             placeholder="Your Working Email"
             className="h-12 p-2 mt-2 w-full border border-gray-500/30 rounded-2xl outline-none focus:border-[#F97316]"
             type="email"
@@ -72,22 +87,21 @@ const ContactUs = () => {
       </div>
 
       <div className="mt-6 w-[350px] md:w-[700px]">
-        <label className="text-black/70" htmlFor="name">
-          Message
-        </label>
+        <label className="text-black/70">Message</label>
         <textarea
-          onChange={(e) => handleChange(e)}
-          placeholder="Your Detail Message"
+          value={message}
+          onChange={handleMessage}
+          placeholder="Your Detailed Message"
           className="w-full mt-2 p-2 h-40 border border-gray-500/30 rounded-2xl resize-none outline-none focus:border-[#F97316]"
           required
-        ></textarea>
+        />
       </div>
 
       <button
         type="submit"
         className="mt-5 flex justify-center items-center gap-3 bg-[#F97316] text-white h-12 w-56 px-4 rounded active:scale-95 transition"
       >
-        Send Message <MdContactSupport size={22} />
+        {status ? status : "Send Message"} <MdContactSupport size={22} />
       </button>
     </form>
   );
