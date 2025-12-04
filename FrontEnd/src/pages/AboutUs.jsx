@@ -55,7 +55,7 @@ export default function AboutUs() {
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 px-6 bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <section className="py-20 px-6 bg-gradient-to from-gray-900 to-gray-800 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Skills */}
