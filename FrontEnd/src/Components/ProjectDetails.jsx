@@ -90,7 +90,7 @@ const ControlDashboardUI = ({ projectDetails }) => {
           <div className="APIKEY w-full flex mb-5 mt-2 justify-between items-center">
             <input className="w-full border-2 border-white py-2 pl-2 rounded-2xl focus:outline-amber-600 duration-300 transition-all" type="text" readOnly value={projectDetails?.porjectAPIKey} />
             {/* <h1>{projectDetails.porjectAPIKey}</h1> */}
-            <button onClick={()=>hanleCopyAPIKey(projectDetails.porjectAPIKey)} className="CopyKey">
+            <button onClick={()=>hanleCopyAPIKey(projectDetails.porjectAPIKey)} className="CopyKey cursor-pointer">
               {
                 IsCopyloading ? <BsFillClipboardCheckFill size={23} className="text-slate-600 ml-2" /> :  <BsFillClipboardFill  size={23} className="text-slate-600 ml-2"/> }
               </button>

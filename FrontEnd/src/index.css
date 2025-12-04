@@ -33,3 +33,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+button{
+  cursor: pointer;
+}

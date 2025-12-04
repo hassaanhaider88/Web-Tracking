@@ -1,4 +1,4 @@
-# Web Tracking Backend API
+# DevTrace By HMK CodeWeb
 
 A complete backend API for web tracking built with Node.js, Express, MongoDB, and Socket.io. This server provides real-time visitor tracking, analytics, and project management.
 
@@ -24,16 +24,19 @@ A complete backend API for web tracking built with Node.js, Express, MongoDB, an
 1. Clone the repository and navigate to the project directory
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory (copy from `.env.example`):
+
 ```bash
 cp .env.example .env
 ```
 
 4. Update the `.env` file with your configuration:
+
 ```
 MONGO_URI=mongodb://localhost:27017/web-tracking
 JWT_SECRET=your-secure-secret-key-change-this
@@ -44,11 +47,13 @@ NODE_ENV=development
 ## Running the Server
 
 ### Development mode (with auto-restart):
+
 ```bash
 npm run dev
 ```
 
 ### Production mode:
+
 ```bash
 npm start
 ```
@@ -60,7 +65,9 @@ The server will start on `http://localhost:3000`
 ### Authentication
 
 #### POST `/api/auth/signup`
+
 Create a new user account
+
 ```json
 {
   "name": "John Doe",
@@ -70,6 +77,7 @@ Create a new user account
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -83,7 +91,9 @@ Response:
 ```
 
 #### POST `/api/auth/login`
+
 Login with existing credentials
+
 ```json
 {
   "email": "john@example.com",
@@ -94,14 +104,17 @@ Login with existing credentials
 ### Projects
 
 #### GET `/api/mywebsites`
+
 Get all projects owned by authenticated user (requires JWT token)
 
 Headers:
+
 ```
 Authorization: Bearer <your-jwt-token>
 ```
 
 Response:
+
 ```json
 {
   "success": true,
@@ -121,14 +134,17 @@ Response:
 ```
 
 #### POST `/api/projects`
+
 Create a new project (requires JWT token)
 
 Headers:
+
 ```
 Authorization: Bearer <your-jwt-token>
 ```
 
 Body:
+
 ```json
 {
   "name": "My Website",
@@ -137,13 +153,16 @@ Body:
 ```
 
 #### GET `/api/projects/:id/visits`
+
 Get visits for a specific project (requires JWT token)
 
 Query parameters:
+
 - `page` (default: 1)
 - `pageSize` (default: 50)
 
 #### GET `/api/projects/:id/stats`
+
 Get aggregated statistics for a project (requires JWT token)
 
 Returns browser stats, OS stats, top countries, and more.
@@ -151,9 +170,11 @@ Returns browser stats, OS stats, top countries, and more.
 ### Tracking (Public Endpoint)
 
 #### POST `/api/track`
+
 Track a visit (no authentication required, uses API key)
 
 Body:
+
 ```json
 {
   "apiKey": "your-project-api-key",
@@ -177,16 +198,16 @@ The server provides real-time updates through Socket.io on the same port (3000).
 ### Connecting from Frontend
 
 ```javascript
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
-const socket = io('http://localhost:3000', {
+const socket = io("http://localhost:3000", {
   auth: {
-    token: 'your-jwt-token'
-  }
+    token: "your-jwt-token",
+  },
 });
 
-socket.on('visit', (data) => {
-  console.log('New visit:', data);
+socket.on("visit", (data) => {
+  console.log("New visit:", data);
   // data structure:
   // {
   //   projectId: "...",
@@ -207,12 +228,14 @@ socket.on('visit', (data) => {
 ## Database Models
 
 ### User
+
 - name: String
 - email: String (unique)
 - passwordHash: String
 - createdAt: Date
 
 ### Project
+
 - owner: ObjectId (ref: User)
 - name: String
 - siteUrl: String
@@ -220,6 +243,7 @@ socket.on('visit', (data) => {
 - createdAt: Date
 
 ### Visit
+
 - project: ObjectId (ref: Project)
 - ip: String
 - geo: { country, region, city, lat, lon }
@@ -237,26 +261,26 @@ Your frontend should connect to `http://localhost:3000` for all API requests. Ex
 
 ```html
 <script>
-(function() {
-  const apiKey = 'your-api-key';
-  const trackingUrl = 'http://localhost:3000/api/track';
+  (function () {
+    const apiKey = "your-api-key";
+    const trackingUrl = "http://localhost:3000/api/track";
 
-  fetch(trackingUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      apiKey: apiKey,
-      path: window.location.pathname,
-      referrer: document.referrer,
-      timestamp: new Date().toISOString(),
-      client: {
-        ua: navigator.userAgent
-      }
-    })
-  });
-})();
+    fetch(trackingUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        apiKey: apiKey,
+        path: window.location.pathname,
+        referrer: document.referrer,
+        timestamp: new Date().toISOString(),
+        client: {
+          ua: navigator.userAgent,
+        },
+      }),
+    });
+  })();
 </script>
 ```
 
@@ -272,6 +296,7 @@ Your frontend should connect to `http://localhost:3000` for all API requests. Ex
 All endpoints return consistent JSON responses:
 
 Success:
+
 ```json
 {
   "success": true,
@@ -280,6 +305,7 @@ Success:
 ```
 
 Error:
+
 ```json
 {
   "success": false,

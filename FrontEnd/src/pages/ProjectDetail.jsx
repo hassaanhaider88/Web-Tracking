@@ -1,3 +1,4 @@
+import { ImSpinner9 } from "react-icons/im"; 
 import { BiArrowBack } from "react-icons/bi";
 import React, { useEffect, useState, useRef } from "react";
 import API, { BackEndURI } from "../utils/api";
@@ -78,6 +79,7 @@ export default function ProjectDetail() {
   const [summary, setSummary] = useState({ totalVisits: 0 });
   const [LoadingState, setLoadingState] = useState(false);
   const [AllUniqueUser, setAllUniqueUser] = useState([]);
+  const [ShowCodeModal, setShowCodeModal] = useState(false);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -126,7 +128,9 @@ export default function ProjectDetail() {
   }
 
   return LoadingState ? (
-    "Loading..."
+    <div className="w-full h-screen flex justify-center items-center">
+     <ImSpinner9 className="animate-spin" size={50} color="orange"/>
+    </div>
   ) : (
     <div
       className="min-h-screen flex flex-col items-center justify-center"
