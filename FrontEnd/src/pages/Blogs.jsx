@@ -50,7 +50,7 @@ const Blogs = () => {
                   <p>{isExpanded ? blog.content : preview}</p>
                   {!isExpanded && blog.content.length > 200 && (
                     <span
-                      className="text-blue-600 cursor-pointer font-medium hover:underline mt-[2px] inline-block"
+                      className="text-blue-600 cursor-pointer font-medium hover:underline mt-0.5 inline-block"
                       onClick={() => setExpanded(index)}
                     >
                       Read more
