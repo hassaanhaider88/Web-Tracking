@@ -212,7 +212,7 @@ export default function NewProject() {
           <div className="mt-6">
             <p className="font-medium text-slate-700">Add this meta tag to your site:</p>
 
-            <pre className="mt-3 p-3 bg-gray-100 rounded text-xs whitespace-pre-wrap">
+            <pre className="mt-3 p-3 select-all bg-gray-100 rounded text-xs whitespace-pre-wrap">
               {metaTag}
             </pre>
 
