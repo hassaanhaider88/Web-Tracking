@@ -2,8 +2,8 @@ import axios from "axios";
 import { getToken, logout } from "../store/authHelpers";
 import { toast } from "react-hot-toast";
 
-export const BackEndURI = import.meta.env.VITE_BACKEND_URL;
-// export const BackEndURI = 'http://localhost:3000'
+// export const BackEndURI = import.meta.env.VITE_BACKEND_URL;
+export const BackEndURI = 'http://localhost:3000'
 
 const API = axios.create({
   baseURL: `${BackEndURI}/api`,
